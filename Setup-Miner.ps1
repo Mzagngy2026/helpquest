@@ -33,7 +33,6 @@
 .PARAMETER Rebench             Ignore cached benchmarks and measure again.
 .PARAMETER NoGpu               CPU mining only.
 .PARAMETER NoAutoStart         Don't register scheduled tasks.
-.PARAMETER AutoLogon           Enable Windows auto-logon (Sysinternals Autologon).
 .PARAMETER Watchdog            (internal) health check + daily re-evaluation. Used by Task Scheduler.
 
 .EXAMPLE
@@ -56,7 +55,6 @@ param(
     [switch]$Rebench,
     [switch]$NoGpu,
     [switch]$NoAutoStart,
-    [switch]$AutoLogon,
     [switch]$Watchdog
 )
 
@@ -296,7 +294,10 @@ function Write-XmrigConfig {
             @{ algo = $algo; url = $pools[1]; user = $WALLETS[$Coin]; pass = $WORKER; keepalive = $true }
         )
     }
-    $cfg | ConvertTo-Json -Depth 6 | Set-Content -Path (Join-Path (Split-Path $ExePath) 'config.json') -Encoding UTF8
+    $json = $cfg | ConvertTo-Json -Depth 6
+    # Write WITHOUT a BOM - XMRig's JSON parser rejects the UTF-8 BOM that
+    # Set-Content -Encoding UTF8 adds on Windows PowerShell 5.1.
+    [System.IO.File]::WriteAllText((Join-Path (Split-Path $ExePath) 'config.json'), $json, (New-Object System.Text.UTF8Encoding $false))
 }
 
 function Get-MinerHashrate {
@@ -360,7 +361,7 @@ function Invoke-Benchmark {
 
 function Get-ApiToken {
     $f = Join-Path $BaseDir '.apitoken'
-    if (-not (Test-Path $f)) { Set-Content $f ([guid]::NewGuid().ToString('N')) -NoNewline }
+    if (-not (Test-Path $f)) { [System.IO.File]::WriteAllText($f, [guid]::NewGuid().ToString('N'), (New-Object System.Text.UTF8Encoding $false)) }
     return (Get-Content $f -Raw).Trim()
 }
 
