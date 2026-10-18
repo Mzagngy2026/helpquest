@@ -306,8 +306,9 @@ function Get-MinerHashrate {
     try {
         switch ($Key) {
             'xmrig' {
-                $s = Invoke-RestMethod "http://127.0.0.1:$port/1/summary" -TimeoutSec 5
+                $s = Invoke-RestMethod "http://127.0.0.1:$port/1/summary" -Headers @{ Authorization = "Bearer $(Get-ApiToken)" } -TimeoutSec 5
                 $v = $s.hashrate.total[1]; if (-not $v) { $v = $s.hashrate.total[0] }
+                if (-not $v) { $v = $s.hashrate.total[2] }
                 return [double]$v
             }
             'trex' {
@@ -631,7 +632,7 @@ if ($Watchdog) {
         if ($online -and $proc.StartTime -lt (Get-Date).AddMinutes(-10)) {
             $hr = Get-MinerHashrate $r.Miner
             $paused = $false
-            if ($r.Miner -eq 'xmrig') { try { $paused = (Invoke-RestMethod "http://127.0.0.1:7777/1/summary" -TimeoutSec 5).paused } catch { } }
+            if ($r.Miner -eq 'xmrig') { try { $paused = (Invoke-RestMethod "http://127.0.0.1:7777/1/summary" -Headers @{ Authorization = "Bearer $(Get-ApiToken)" } -TimeoutSec 5).paused } catch { } }
             if (($null -eq $hr -or $hr -eq 0) -and -not $paused) { Log "$slot hung (0 H/s / no API) -> restarting miner" 'WARN'; Stop-MinerProcess $r.Miner }
         }
     }
