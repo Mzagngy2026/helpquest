@@ -353,7 +353,7 @@ function Invoke-Benchmark {
     $hr = Get-MinerHashrate $Key
     if (-not $hr) { Start-Sleep -Seconds 20; $hr = Get-MinerHashrate $Key }
     Stop-MinerProcess $Key
-    if ($hr) { Log ("  {0}: {1:N0} H/s" -f $Coin, $hr) 'OK' } else { Log "  $Coin: no hashrate reported (unsupported on this card or miner error - see $LogDir)" 'WARN' }
+    if ($hr) { Log ("  {0}: {1:N0} H/s" -f $Coin, $hr) 'OK' } else { Log "  ${Coin}: no hashrate reported (unsupported on this card or miner error - see $LogDir)" 'WARN' }
     return $hr
 }
 
@@ -753,7 +753,7 @@ foreach ($slot in $slots) {
     if ($econ.Count) { $best = Select-Best -Candidates $cands -Bench $state.Benchmarks -Econ $econ -Slot $slot }
     if (-not $best) {
         $fb = $withWallet | Where-Object { $_.Slot -eq $slot -and $state.Benchmarks.($_.Coin) } | Select-Object -First 1
-        if (-not $fb) { Log "$slot: nothing mineable (no wallet or all benchmarks failed)" 'WARN'; continue }
+        if (-not $fb) { Log "${slot}: nothing mineable (no wallet or all benchmarks failed)" 'WARN'; continue }
         $best = [pscustomobject]@{ Coin = $fb.Coin; Miner = $fb.Miner; Exe = $fb.Exe; UsdPerDay = $null }
     }
     Write-Launcher -Slot $slot -Key $best.Miner -ExePath $best.Exe -Coin $best.Coin | Out-Null
