@@ -127,7 +127,7 @@ $COINS = @{
 }
 
 $MINERS = @{
-    xmrig    = @{ Repo = 'xmrig/xmrig';                 Pattern = 'msvc-win64\.zip$'; Exe = 'xmrig.exe';    Port = 7777 }
+    xmrig    = @{ Repo = 'xmrig/xmrig';                 Pattern = 'windows-x64\.zip$'; Exe = 'xmrig.exe';   Port = 7777 }
     lolminer = @{ Repo = 'Lolliedieb/lolMiner-releases'; Pattern = 'Win64\.zip$';      Exe = 'lolMiner.exe'; Port = 4068 }
     rigel    = @{ Repo = 'rigelminer/rigel';            Pattern = 'win\.zip$';        Exe = 'rigel.exe';    Port = 5000 }
     trex     = @{ Repo = 'trexminer/T-Rex';             Pattern = 'win\.zip$';        Exe = 't-rex.exe';    Port = 4067 }
