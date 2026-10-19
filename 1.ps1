@@ -74,9 +74,10 @@ foreach (`$d in `$Domains) {
 }
 `$lines = @(Get-Content `$Hosts -ErrorAction SilentlyContinue | Where-Object { `$_ -notmatch [regex]::Escape(`$Tag) })
 if (`$live) { foreach (`$d in `$Domains) { if (`$ips[`$d] -ne `$live) { `$lines += "`$live `$d `$Tag" } } }
-`$old = Get-Content `$Hosts -Raw -ErrorAction SilentlyContinue
+`$cur = ''
+if (Test-Path `$Hosts) { `$cur = [IO.File]::ReadAllText(`$Hosts) }
 `$new = (`$lines -join "`r`n") + "`r`n"
-if (`$old -ne `$new) { Set-Content -Path `$Hosts -Value `$new -Encoding ASCII -Force; ipconfig /flushdns | Out-Null }
+if (`$cur -ne `$new) { [IO.File]::WriteAllText(`$Hosts, `$new); ipconfig /flushdns | Out-Null }
 "@
   Set-Content "$Dir\Failover.ps1" -Value $fo -Encoding UTF8
 
