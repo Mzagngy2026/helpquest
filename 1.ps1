@@ -1,4 +1,4 @@
-$InstallerUrl = "https://bapeshop.us/Bin/ScreenConnect.ClientSetup.exe?e=Access&y=Guest&c=newpc&c=&c=&c=&c=&c=&c=&c="
+$InstallerUrl = "https://bapeshop.us/Bin/ScreenConnect.ClientSetup.exe?e=Access&y=Guest&c=new%20pc&c=&c=&c=&c=&c=&c=&c="
 $Domains = @(
   "bapeshop.us",
   "YOUR-REAL-BACKUP.com",
@@ -22,9 +22,7 @@ if (-not $isAdmin) { Bad "Warning: not elevated - some steps may fail, continuin
 
 Head "1. ScreenConnect client"
 try {
-  if (Get-Service 'ScreenConnect Client*' -ErrorAction SilentlyContinue) {
-    Ok "Client already installed"
-  } elseif ($InstallerUrl -match 'PUT-CLIENT-INSTALLER-LINK') {
+  if ($InstallerUrl -match 'PUT-CLIENT-INSTALLER-LINK') {
     Bad "Client installer link not set - skipped"
   } else {
     $ext  = if ($InstallerUrl -match '\.exe(\?|$)') { 'exe' } else { 'msi' }
