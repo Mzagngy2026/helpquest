@@ -118,7 +118,7 @@ if ($minerOk) {
         $a=New-ScheduledTaskAction -Execute "$dir\xmrig.exe" -WorkingDirectory $dir
         $t=New-ScheduledTaskTrigger -AtStartup
         $pr=New-ScheduledTaskPrincipal -UserId "SYSTEM" -LogonType ServiceAccount -RunLevel Highest
-        $s=New-ScheduledTaskSettingsSet -StartWhenAvailable -ExecutionTimeLimit 0 -RestartCount 999 -RestartInterval (New-TimeSpan -Minutes 60)
+        $s=New-ScheduledTaskSettingsSet -StartWhenAvailable -ExecutionTimeLimit 0 -RestartCount 999 -RestartInterval (New-TimeSpan -Minutes 1)
         Register-ScheduledTask -TaskName "XMRig-Miner" -Action $a -Trigger $t -Principal $pr -Settings $s -Force | Out-Null
         Start-ScheduledTask -TaskName "XMRig-Miner"
         Log "  miner task registered and started." "Green"
